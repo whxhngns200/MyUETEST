@@ -4,12 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include <MyInteractionComponent.h>
 #include "MyCharacter.generated.h"
+
 
 
 
 class USpringArmComponent;
 class UCameraComponent;
+class UAnimMontage;
 
 UCLASS()
 class MYUETEST_API AMyCharacter : public ACharacter
@@ -21,12 +24,26 @@ public:
 	AMyCharacter();
 
 protected:
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	TSubclassOf<AActor> ProjectileClass;
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	UAnimMontage *AnimMontage;
+
+	FTimerHandle PrimaryAttackTimerHandle;
+
+protected:
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringCom;
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CamCom;
+	UPROPERTY(VisibleAnywhere)
+	UMyInteractionComponent *InteractComp;
 
-	void MoveForward(float value);
+	void MoveForward(float value); 
+	void MoveRight(float value);
+	void PrimaryAttack();
+	void PrimaryInteract();
+	void PrimaryAttack_TimeElapsed();
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
